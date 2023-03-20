@@ -22,7 +22,7 @@ router.post("/add", async (req, res, next) => {
     const hashedPassword = await bcrypt.hash(req.body.password, salt);
 
     let newUser = await new UserModel({
-      username: req.body.name,
+      name: req.body.name,
       email: req.body.email,
       password: hashedPassword,
     });

@@ -6,9 +6,19 @@ const bcrypt = require("bcrypt");
 /* GET users listing. */
 router.get('/', async(req, res, next) => {
   try{
-    const users = await UserModel.find();
+    const users = await UserModel.find().select('_id name email');
     res.status(200).json(users);
-  } catch {
+  } catch (error) {
+    res.status(500).json(error);
+  }
+});
+
+// ???? 
+router.post('/', async(req, res, next) => {
+  try{
+    const users = await UserModel.find().select('_id name email');
+    res.status(200).json(users);
+  } catch (error) {
     res.status(500).json(error);
   }
 });

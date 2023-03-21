@@ -16,7 +16,8 @@ const ProductSchema = mongoose.Schema({
     },
     lager: {
         type: Number,
-        required: true
+        required: true,
+        min: 0
     }
 },
 

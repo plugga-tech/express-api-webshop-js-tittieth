@@ -26,7 +26,7 @@ router.post("/add", async (req, res, next) => {
         await product.save();
       }
     }
-    res.status(201).json(order);
+    res.status(200).json(order);
   } catch (error) {
     res.status(500).json(error);
   }

@@ -16,8 +16,9 @@ router.get('/', async(req, res, next) => {
 // ???? 
 router.post('/', async(req, res, next) => {
   try{
-    const users = await UserModel.find().select('_id name email');
-    res.status(200).json(users);
+    const findUser = await UserModel.find({_id: req.body.id});
+    console.log(findUser);
+    res.send(findUser);
   } catch (error) {
     res.status(500).json(error);
   }

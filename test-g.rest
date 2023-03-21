@@ -23,9 +23,9 @@ POST http://localhost:3000/api/users/add
 Content-Type: application/json
 
 {
-  "name": "Diesel",
-  "email": "Diesel@mail.com",
-  "password": "diesel"
+  "name": "Dante",
+  "email": "Dante@mail.com",
+  "password": "dante"
 }
 
 ###
@@ -62,10 +62,10 @@ POST http://localhost:3000/api/products/add
 Content-Type: application/json
 
 {
-  "name": "Produkt 4",
+  "name": "Produkt 5",
   "description": "Beskrivning av produkt 4",
   "price": 300, 
-  "stock": 30
+  "quantity": 30
 }
 
 ###

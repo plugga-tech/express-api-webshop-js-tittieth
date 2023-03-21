@@ -12,9 +12,13 @@ router.get('/all', async(req, res, next) => {
 });
 
 router.post("/add", async (req, res, next) => {
-  const order = await OrderModel.create(req.body);
-  console.log(order);
-  res.status(201).json(order);
+  try {
+    const order = await OrderModel.create(req.body);
+    console.log(order);
+    res.status(201).json(order);
+  } catch (error) {
+    res.status(500).json(error)
+  }
 });
 
 module.exports = router;

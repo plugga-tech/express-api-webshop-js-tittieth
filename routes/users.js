@@ -13,7 +13,7 @@ router.get('/', async(req, res, next) => {
   }
 });
 
-// ???? 
+
 router.post('/', async(req, res, next) => {
   try{
     const findUser = await UserModel.find({_id: req.body.id});
@@ -25,9 +25,6 @@ router.post('/', async(req, res, next) => {
 });
 
 router.post("/add", async (req, res, next) => {
-  //let newUser = await UserModel.create(req.body)
-  // const confirm = await User.find({Username : req.body.username ,email : req.body.email})
-  //confirm && res.status(400).json('this user or email exist');
   try {
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(req.body.password, salt);
@@ -48,7 +45,7 @@ router.post("/add", async (req, res, next) => {
 });
 
 router.post("/login", async (req, res, next) => {
-  //try {
+  try {
     const user = await UserModel.findOne({ username: req.body.name });
     !user && res.status(400).json("user does not exist");
 
@@ -58,9 +55,9 @@ router.post("/login", async (req, res, next) => {
     const { password, ...loggedin } = user._doc;
 
     res.status(200).json(loggedin);
-  // } catch (error) {
-  //   res.status(500).json(error);
-  // }
+  } catch (error) {
+     res.status(500).json(error);
+   }
 });
 
 module.exports = router;

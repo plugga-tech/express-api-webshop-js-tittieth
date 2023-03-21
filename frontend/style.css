@@ -1,0 +1,83 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Amatic SC', cursive;
+  }
+
+body {
+    background-color: #F4EEED;
+    width: 100vw;
+}
+
+h1 {
+    margin-bottom: 80px;
+    font-size: 180px;
+    position: relative;
+    left: 350px;
+    top: 200px;
+}
+
+.van {
+    position: absolute;
+    top: 150px;
+    right: 350px;
+
+}
+
+#name, #password {
+    padding: 15px 45px;
+    border: none;
+    border-radius: 10px;
+}
+
+.login-btn {
+    background-color: #D8AC9C;
+    border: none;
+    border-radius: 10px;
+    width: 65px;
+    height: 45px;
+    margin-left: 10px;
+}
+
+#formId {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 60px;
+    margin-top: -60px;
+}
+
+.login-div {
+    display: flex;
+    align-items: center;
+}
+
+.signup_link {
+    display: flex;
+    align-items: center;
+}
+
+.signup_link p {
+    font-size: 1.2rem;
+}
+
+#signUpBtn {
+    background-color: #D8AC9C;
+    border: none;
+    border-radius: 10px;
+    margin-left: 10px;
+    width: 65px;
+    height: 45px;
+}
+
+.txt_field:first-of-type {
+    margin-right: 15px;
+}
+
+.txt_field {
+    margin-top: 5px;
+}
+
+
+

@@ -28,7 +28,7 @@ router.post("/add", async (req, res, next) => {
     }
     res.status(200).json(order);
   } catch (error) {
-    res.status(500).json(error);
+    res.status(500).json("Ditt ordervärde är högre än aktuellt lagervärde");
   }
 });
 

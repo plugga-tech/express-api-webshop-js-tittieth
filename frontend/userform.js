@@ -16,13 +16,13 @@ export function printLoginForm() {
     let loginDiv = document.createElement("div");
     loginDiv.classList.add("login-div")
 
-    let inputDivName = document.createElement("div");
-    inputDivName.classList.add("txt_field");
-    let nameInput = document.createElement("input");
-    nameInput.setAttribute("type", "text");
-    nameInput.setAttribute("name", "name");
-    nameInput.setAttribute("id", "name");
-    nameInput.placeholder = "name";
+    let inputDivEmail = document.createElement("div");
+    inputDivEmail.classList.add("txt_field");
+    let emailInput = document.createElement("input");
+    emailInput.setAttribute("type", "email");
+    emailInput.setAttribute("name", "email");
+    emailInput.setAttribute("id", "email");
+    emailInput.placeholder = "email";
     let span = document.createElement("span");
     let labelName = document.createElement("label");
     //labelName.innerText = "Username";
@@ -52,9 +52,9 @@ export function printLoginForm() {
     signUpBtn.setAttribute("id", "signUpBtn");
     signUpBtn.innerText = "Signup";
 
-    inputDivName.append(nameInput, span, labelName);
+    inputDivEmail.append(emailInput, span, labelName);
     inputDivPassword.append(passwordInput, spanTwo, labelPassword);
-    loginDiv.append(inputDivName, inputDivPassword, loginBtn)
+    loginDiv.append(inputDivEmail, inputDivPassword, loginBtn)
     signUpDiv.append(signUpTxt, signUpBtn);
     formWrapper.append(loginDiv, signUpDiv);
     formDiv.append(loginHeader, formWrapper);
@@ -67,12 +67,12 @@ export function printLoginForm() {
     loginBtn.addEventListener("click", () => {
 
         let loginUser = {
-            name: nameInput.value,
+            email: emailInput.value,
             password: passwordInput.value
         }
         console.log(loginUser);
         
-        fetch("http://localhost:3000/users/login", {
+        fetch("http://localhost:3000/api/users/login", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -81,10 +81,10 @@ export function printLoginForm() {
            })
            .then(res => res.json())
            .then(data => {
-                if (data.username) {
-                    loggedInMsg.innerHTML = `<h3>Du är nu inloggad ${data.username}!<br>
+                if (data.email) {
+                    loggedInMsg.innerHTML = `<h3>Du är nu inloggad ${data.email}!<br>
                     Hoppas du har en fin dag!</h3>`;
-                    localStorage.setItem("username", data.username);
+                    localStorage.setItem("username", data.email);
                     printLogoutBtn();
                 }
                 else {
@@ -131,6 +131,12 @@ export function printLogoutBtn() {
     newUserName.setAttribute("id", "newUserName");
     newUserName.placeholder= "name";
 
+    let newUserEmail = document.createElement("input");
+    newUserEmail.setAttribute("type", "email");
+    newUserEmail.setAttribute("name", "newemail");
+    newUserEmail.setAttribute("id", "newUserEmail");
+    newUserEmail.placeholder= "email";
+
     let newUserPassword = document.createElement("input");
     newUserPassword .setAttribute("type", "password");
     newUserPassword .setAttribute("name", "password");
@@ -142,16 +148,16 @@ export function printLogoutBtn() {
     saveNewUserBtn.classList.add("new-user-btn");
     saveNewUserBtn.innerText = "Save";
 
-    signupFormDiv.append(signupHeader, newUserName, newUserPassword, saveNewUserBtn);
+    signupFormDiv.append(signupHeader, newUserName, newUserEmail , newUserPassword, saveNewUserBtn);
     loginApp.append(signupFormDiv);
 
     saveNewUserBtn.addEventListener("click", () => {
         // SKAPA EN NY ANVÄNDARE
-        let user = {username: newUserName.value, password: newUserPassword.value };
+        let user = {name: newUserName.value, email: newUserEmail.value, password: newUserPassword.value };
         console.log(user);
 
         // SKICKA TILL SERVERN
-       fetch("http://localhost:3000/users/add", {
+       fetch("http://localhost:3000/api/users/add", {
         method: "POST",
         headers: {
             "Content-Type": "application/json",

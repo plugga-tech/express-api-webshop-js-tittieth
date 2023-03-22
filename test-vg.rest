@@ -35,8 +35,8 @@ POST http://localhost:3000/api/users/login
 Content-Type: application/json
 
 {
-  "email": "test@mail.com",
-  "password": "test"
+  "email": "Dante@mail.com",
+  "password": "dante"
 }
 
 ###
@@ -60,9 +60,9 @@ POST http://localhost:3000/api/products/add
 Content-Type: application/json
 
 {
-  "name": "Produkt 2",
+  "name": "Produkt 4",
   "description": "Beskrivning av produkt 1",
-  "price": 100,
+  "price": 200,
   "lager": 10,
   "category": "// ID PÅ EN SPECIFIK KATEGORI",
   "token": "1234key1234"

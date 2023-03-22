@@ -19,7 +19,7 @@ router.post("/", async (req, res, next) => {
     console.log(findUser);
     res.send(findUser);
   } catch (error) {
-    res.status(500).json(error);
+    res.status(400).json(error);
   }
 });
 
@@ -44,11 +44,12 @@ router.post("/add", async (req, res, next) => {
 });
 
 router.post("/login", async (req, res, next) => {
-  const user = await UserModel.findOne({ username: req.body.name });
-  !user && res.status(400).json("user does not exist");
+  const user = await UserModel.findOne({ email: req.body.email });
+  console.log(user);
+  !user && res.status(401).json("user does not exist");
 
   const validate = await bcrypt.compare(req.body.password, user.password);
-  !validate && res.status(400).json("wrong password");
+  !validate && res.status(401).json("wrong password");
 
   const { password, ...loggedin } = user._doc;
 

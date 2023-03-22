@@ -3,6 +3,7 @@
     padding: 0;
     box-sizing: border-box;
     font-family: 'Amatic SC', cursive;
+    overflow-x: hidden;
   }
 
 body {
@@ -11,27 +12,43 @@ body {
 }
 
 h1 {
-    margin-bottom: 80px;
-    font-size: 180px;
-    position: relative;
-    left: 350px;
-    top: 200px;
+    /* margin-bottom: 20px; */
+    font-size: 10rem;
+    /* position: relative;
+    left: 250px;
+    top: -320px; */
+} 
+
+header {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 50px;
+    align-items: center;
 }
 
 .van {
-    position: absolute;
-    top: 150px;
-    right: 350px;
-
+    /* display: inline;
+    position: relative; */
+    left: 780px;
+    top: 50px;
+    /* top: 150px;
+    right: 350px; */
 }
 
-#name, #password {
+.wave {
+    position: relative;
+    bottom: 250px;
+    z-index: -10;
+}
+
+#email, #password, #newUserpassword, #newUserName, #newUserEmail {
     padding: 15px 45px;
     border: none;
     border-radius: 10px;
+    font-family: arial;
 }
 
-.login-btn {
+.login-btn, #newUserBtn {
     background-color: #D8AC9C;
     border: none;
     border-radius: 10px;
@@ -45,7 +62,7 @@ h1 {
     align-items: center;
     justify-content: space-between;
     padding: 20px 60px;
-    margin-top: -60px;
+    margin-right: 90px;
 }
 
 .login-div {
@@ -78,6 +95,41 @@ h1 {
 .txt_field {
     margin-top: 5px;
 }
+
+.mini-basket {
+    height: 75px;
+    width: 75px;
+    border-radius: 100%;
+    border: 1px solid grey;
+    position: fixed;
+    top: 10px;
+    right: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background: white;
+    opacity: 90%;
+    z-index: 15;
+  }
+
+  .mini-basket span {
+     z-index: 15; 
+  }
+  
+  #miniBasket .material-symbols-outlined {
+    position: fixed;
+    font-size: 3rem;
+    text-align: center;
+    color: lightgray;
+    overflow: hidden;
+    z-index: 10;
+  }
+  
+
+/* .hidden {
+    display: none;
+} */
 
 
 

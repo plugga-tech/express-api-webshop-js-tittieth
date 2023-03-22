@@ -8,7 +8,7 @@ router.get("/all", async (req, res, next) => {
     const orders = await OrderModel.find();
     res.status(200).json(orders);
   } catch (error) {
-    res.status(500).json(error);
+    res.status(401).json(error);
   }
 });
 
@@ -28,7 +28,7 @@ router.post("/add", async (req, res, next) => {
     }
     res.status(200).json(order);
   } catch (error) {
-    res.status(500).json("Ditt ordervärde är högre än aktuellt lagervärde");
+    res.status(401).json("Ditt ordervärde är högre än aktuellt lagervärde");
   }
 });
 

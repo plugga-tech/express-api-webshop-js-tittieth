@@ -1,5 +1,9 @@
 import {printLoginForm, printLogoutBtn} from "./userform.js";
 
+const miniBasket = document.querySelector('#miniBasket');
+const numberOfProductsInMiniBasket = document.querySelector('#numberOfProductsInMiniBasket');
+const totalPriceInMiniBasket = document.querySelector('#totalPriceInMiniBasket');
+
 let root = document.getElementById("blogPosts");
 
 

@@ -63,10 +63,10 @@ router.post("/add", async (req, res, next) => {
       if (validateOrder) {
         res.status(200).json(order);
       } else {
-        res.status(401).json("Produkten kunde inte hittas eller finns inte i lager");
+        res.status(401).json("Product is sold out or does not exist");
       }
     } else {
-      res.status(401).json("Användaren hittades inte");
+      res.status(401).json("User not found");
     }
   } catch (error) {
     console.log(error);

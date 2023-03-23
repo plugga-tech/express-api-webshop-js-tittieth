@@ -5,7 +5,11 @@ const ProductModel = require("../models/product-model");
 router.get("/", async (req, res, next) => {
   try {
     const products = await ProductModel.find();
-    res.status(200).json(products);
+    if (products.length > 0) {
+      res.status(200).json(products);
+    } else {
+      res.status(404).json("No products found");
+    }
   } catch (error) {
       res.status(400).json(error);
   }
@@ -16,10 +20,12 @@ router.get("/:id", async (req, res, next) => {
     const findProduct = await ProductModel.findById({ _id: req.params.id });
     console.log(findProduct);
     if (findProduct) {
-      res.send(findProduct);
-    } 
+      res.status(200).json(findProduct);
+    } else {
+      res.status(404).json("No product found");
+    }
   } catch (error) {
-    res.status(400).json("product does not exist")
+    res.status(400).json(error)
   }
 });
 

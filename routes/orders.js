@@ -7,7 +7,11 @@ const UserModel = require("../models/user-model");
 router.get("/all", async (req, res, next) => {
   try {
     const orders = await OrderModel.find();
-    res.status(200).json(orders);
+    if (orders.length > 0) {
+      res.status(200).json(orders);
+    } else {
+      res.status(404).json("No orders found");
+    }
   } catch (error) {
     res.status(401).json(error);
   }

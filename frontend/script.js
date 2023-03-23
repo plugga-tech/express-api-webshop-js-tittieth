@@ -32,10 +32,22 @@ function printProducts() {
     products.map(product => {
         let li = document.createElement("li")
         li.id = product.name;
-        li.innerHTML = `<h1>${product.name}</h1><img src="images/img1.jpg" alt="" width="100" height="240"><p>${product.description}</p>`;
+        li.innerHTML = `<div class="item">
+        <img src="images/img1.jpg" alt="" width="200" height="240">
+        <div class="item-content">
+          <div class="item-info">
+            <h3>${product.name}</h3>
+            <p>${product.description}</p>
+          </div>
+          <div class="item-selection">
+            <button class="button-add">+</button>
+            <p>${product.price}</p>
+            <button class="button-remove">-</button>
+          </div>
+        </div>
+      </div>`;
         productCards.appendChild(li);
     })
-
     productWrapper.innerHTML = "";
     productWrapper.appendChild(productCards);
     });  
@@ -64,6 +76,16 @@ function printCategories() {
      categoryWrapper.appendChild(categoryUL);
     });  
 }
+
+const addBtn = document.querySelectorAll('.button-add');
+addBtn.forEach(btn => {
+  btn.addEventListener('click', add);
+});
+
+const removeBtn = document.querySelectorAll('.button-remove');
+removeBtn.forEach(btn => {
+  btn.addEventListener('click', remove);
+});
 
 printProducts();
 printCategories();

@@ -15,11 +15,11 @@ router.get("/:id", async (req, res, next) => {
   try {
     const findProduct = await ProductModel.findById({ _id: req.params.id });
     console.log(findProduct);
-    !findProduct && res.status(400).json("product does not exist");
-
-    res.send(findProduct);
+    if (findProduct) {
+      res.send(findProduct);
+    } 
   } catch (error) {
-    res.status(400).json(error)
+    res.status(400).json("product does not exist")
   }
 });
 
@@ -28,9 +28,9 @@ router.post("/add", async (req, res, next) => {
     const product = new ProductModel(req.body);
     console.log(product);
     await product.save();
-    res.status(201).json(product);
+    res.status(200).json(product);
   } catch (error) {
-    res.status(500).json(error)
+    res.status(400).json(error)
   }
 });
 

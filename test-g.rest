@@ -13,7 +13,7 @@ POST http://localhost:3000/api/users/
 Content-Type: application/json
 
 {
-  "id": "64183575d49ee74516335933"
+  "id": "641c3654ca34ef752ed6e1e5"
 }
 
 ###
@@ -35,8 +35,8 @@ POST http://localhost:3000/api/users/login
 Content-Type: application/json
 
 {
-  "email": "test@mail.com",
-  "password": "test"
+  "email": "Dante@mail.com",
+  "password": "dante"
 }
 
 ###
@@ -83,7 +83,7 @@ Content-Type: application/json
       "products": [
     {
       "productId": "641c0a0d566c762ba2759b30",
-      "quantity": 2
+      "quantity": 29
     },
     {
       "productId": "641c0a06566c762ba2759b2e",

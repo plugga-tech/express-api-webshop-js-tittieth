@@ -7,7 +7,11 @@ const bcrypt = require("bcrypt");
 router.get("/", async (req, res, next) => {
   try {
     const users = await UserModel.find().select("_id name email");
-    res.status(200).json(users);
+    if (users.length > 0) {
+      res.status(200).json(users);
+    } else {
+      res.status(404).json("No users found");
+    }
   } catch (error) {
     res.status(400).json(error);
   }
@@ -17,7 +21,11 @@ router.post("/", async (req, res, next) => {
   try {
     const findUser = await UserModel.find({ _id: req.body.id });
     console.log(findUser);
-    res.send(findUser);
+    if (findUser.length > 0) {
+      res.send(findUser);
+    } else {
+      res.status(404).json("No user found");
+    }
   } catch (error) {
     res.status(400).json(error);
   }
@@ -44,16 +52,27 @@ router.post("/add", async (req, res, next) => {
 });
 
 router.post("/login", async (req, res, next) => {
-  const user = await UserModel.findOne({ email: req.body.email });
-  console.log(user);
-  !user && res.status(401).json("user does not exist");
+  try {
+    const user = await UserModel.findOne({ email: req.body.email });
+    console.log(user);
 
-  const validate = await bcrypt.compare(req.body.password, user.password);
-  !validate && res.status(401).json("wrong password");
+    if (!user) {
+      return res.status(404).json("user does not exist");
+    }
 
-  const { password, ...loggedin } = user._doc;
+    const validate = await bcrypt.compare(req.body.password, user.password);
 
-  res.status(200).json(loggedin);
+    if (!validate) {
+      return res.status(401).json("wrong password");
+    }
+
+    const { password, ...loggedin } = user._doc;
+
+    return res.status(200).json(loggedin);
+  } catch (error) {
+    console.log(error);
+    return res.status(400).json(error);
+  }
 });
 
 module.exports = router;

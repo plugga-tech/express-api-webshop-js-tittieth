@@ -4,16 +4,31 @@ const OrderModel = require("../models/order-model");
 const ProductModel = require("../models/product-model");
 const UserModel = require("../models/user-model");
 
-router.get("/all", async (req, res, next) => {
+// router.get("/all", async (req, res, next) => {
+//   try {
+//     const orders = await OrderModel.find();
+//     if (orders.length > 0) {
+//       res.status(200).json(orders);
+//     } else {
+//       res.status(404).json("No orders found");
+//     }
+//   } catch (error) {
+//     res.status(401).json(error);
+//   }
+// });
+
+router.get("/all/:token", async (req, res, next) => {
   try {
     const orders = await OrderModel.find();
-    if (orders.length > 0) {
+    const token = (req.params.token);
+    console.log(token);
+    if ((token === "1234key1234")) {
       res.status(200).json(orders);
     } else {
-      res.status(404).json("No orders found");
+      res.status(401).json("not authorized to do that")
     }
   } catch (error) {
-    res.status(401).json(error);
+    res.status(400).json(error)
   }
 });
 
@@ -55,6 +70,20 @@ router.post("/add", async (req, res, next) => {
     }
   } catch (error) {
     console.log(error);
+    res.status(400).json(error);
+  }
+});
+
+router.post("/user", async (req, res, next) => {
+  try {
+    const findOrders = await OrderModel.find({ user: req.body.user });
+    const token = (req.body.token);
+    if (token === "1234key1234") {
+      res.send(findOrders);
+    } else {
+      res.status(401).json("not authorized to do that")
+    }
+  } catch (error) {
     res.status(400).json(error);
   }
 });

@@ -51,7 +51,7 @@ GET http://localhost:3000/api/products
 ###
 
 // HÄMTA SPECIFIK PRODUKT
-GET http://localhost:3000/api/products/641c3a50a6a92d1777f35048
+GET http://localhost:3000/api/products/641c55e9c728a270a62c5362
 
 ###
 
@@ -60,18 +60,18 @@ POST http://localhost:3000/api/products/add
 Content-Type: application/json
 
 {
-  "name": "Produkt 4",
-  "description": "Beskrivning av produkt 1",
+  "name": "keps",
+  "description": "vintage",
   "price": 200,
   "lager": 10,
-  "category": "// ID PÅ EN SPECIFIK KATEGORI",
+  "category": "641c50a0013a9f12c1457db7",
   "token": "1234key1234"
 }
 
 ###
 
 // HÄMTA ALLA PRODUKTER FÖR EN SPECIFIK KATEGORI
-GET http://localhost:3000/api/products/category/ // ID PÅ EN SPECIFIK KATEGORI
+GET http://localhost:3000/api/products/category/641c3eaf202c437462ab8045
 ###
 
 //

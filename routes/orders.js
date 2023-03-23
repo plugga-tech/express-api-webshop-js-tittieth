@@ -22,24 +22,32 @@ router.post("/add", async (req, res, next) => {
     if (findUser) {
       const order = await OrderModel.create(req.body);
       console.log(order);
-  
+
+      let validateOrder = true;
+
       for (const { productId, quantity } of products) {
         const product = await ProductModel.findOne({ _id: productId });
         if (product) {
           product.lager -= quantity;
-            if (product.lager <= 0) {
-              res.status(401).json("Produkten är slut i lager");
-            }else {
-              await product.save();
-            }
+          if (product.lager <= 0) {
+            validateOrder = false;
+            break;
+          } else {
+            await product.save();
+          }
         } else {
-          res.status(401).json("Produkten finns inte");
+          validateOrder = false;
           break;
         }
       }
-      res.status(200).json(order);
+
+      if (validateOrder) {
+        res.status(200).json(order);
+      } else {
+        res.status(401).json("Produkten kunde inte hittas eller finns inte i lager");
+      }
     } else {
-      res.status(401).json("Användaren kan inte hittas");
+      res.status(401).json("Användaren hittades inte");
     }
   } catch (error) {
     console.log(error);

@@ -1,10 +1,10 @@
-*{
+* {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
     font-family: 'Amatic SC', cursive;
     overflow-x: hidden;
-  }
+}
 
 body {
     background-color: #F4EEED;
@@ -17,7 +17,7 @@ h1 {
     /* position: relative;
     left: 250px;
     top: -320px; */
-} 
+}
 
 header {
     display: flex;
@@ -37,18 +37,29 @@ header {
 
 .wave {
     position: relative;
-    bottom: 250px;
+    top: -250px;
     z-index: -10;
 }
 
-#email, #password, #newUserpassword, #newUserName, #newUserEmail {
+.footer-wave {
+    height: 900px;
+    position: relative;
+    display: inline;
+}
+
+#email,
+#password,
+#newUserpassword,
+#newUserName,
+#newUserEmail {
     padding: 15px 45px;
     border: none;
     border-radius: 10px;
     font-family: arial;
 }
 
-.login-btn, #newUserBtn {
+.login-btn,
+#newUserBtn {
     background-color: #D8AC9C;
     border: none;
     border-radius: 10px;
@@ -111,25 +122,46 @@ header {
     background: white;
     opacity: 90%;
     z-index: 15;
-  }
+}
 
-  .mini-basket span {
-     z-index: 15; 
-  }
-  
-  #miniBasket .material-symbols-outlined {
+.mini-basket span {
+    z-index: 15;
+}
+
+#miniBasket .material-symbols-outlined {
     position: fixed;
     font-size: 3rem;
     text-align: center;
     color: lightgray;
     overflow: hidden;
     z-index: 10;
-  }
-  
+}
+
 
 /* .hidden {
     display: none;
 } */
 
+.categoryUL, .productCards {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(2, 1fr);
+    grid-column-gap: 20px;
+    grid-row-gap: 60px;
+    font-size: 1rem;
+}
 
+.categoryUL h1, .productCards h1 {
+    font-size: 5rem;
+}
 
+.category-section {
+    text-align: center;
+    position: relative;
+    top: -200px;
+}
+
+.productCards {
+    text-align: center;
+    margin-bottom: 450px;
+}

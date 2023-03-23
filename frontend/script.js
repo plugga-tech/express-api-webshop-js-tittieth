@@ -4,7 +4,8 @@ const miniBasket = document.querySelector('#miniBasket');
 const numberOfProductsInMiniBasket = document.querySelector('#numberOfProductsInMiniBasket');
 const totalPriceInMiniBasket = document.querySelector('#totalPriceInMiniBasket');
 
-let root = document.getElementById("blogPosts");
+const productWrapper = document.getElementById("productsWrapper");
+const categoryWrapper = document.getElementById("categories")
 
 
 
@@ -16,28 +17,53 @@ if (localStorage.getItem("username")) {
     printLoginForm();
 }
 
-// function printBlogPosts() {
+function printProducts() {
 
-//     fetch("http://localhost:3000/blogposts")
-//     .then(res => res.json())
-//     .then(posts => {
-//         //console.log(data);
-//        // printposts(data);
+    fetch("http://localhost:3000/api/products")
+    .then(res => res.json())
+    .then(products => {
 
-//        console.log(posts);
+       console.table(products);
 
-//     let blogPosts = document.createElement("ul");
-//     blogPosts.classList.add("blogPosts");
-//     blogPosts.innerHTML = "";
+    let productCards = document.createElement("ul");
+    productCards.classList.add("productCards");
+    productCards.innerHTML = "";
 
-//     posts.map(post => {
-//         let li = document.createElement("li")
-//         li.id = post.author;
-//         li.innerHTML = `<h1>${post.title}</h1><p>${post.content}</p>`;
-//         blogPosts.appendChild(li);
-//     })
+    products.map(product => {
+        let li = document.createElement("li")
+        li.id = product.name;
+        li.innerHTML = `<h1>${product.name}</h1><img src="images/img1.jpg" alt="" width="100" height="240"><p>${product.description}</p>`;
+        productCards.appendChild(li);
+    })
 
-//     root.innerHTML = "";
-//     root.appendChild(blogPosts);
-//     });  
-// }
+    productWrapper.innerHTML = "";
+    productWrapper.appendChild(productCards);
+    });  
+}
+
+function printCategories() {
+
+    fetch("http://localhost:3000/api/categories")
+    .then(res => res.json())
+    .then(categories => {
+
+      console.table(categories);
+
+     const categoryUL = document.createElement("ul");
+     categoryUL.classList.add("categoryUL");
+     categoryUL.innerHTML = "";
+
+     categories.map(category => {
+         let li = document.createElement("li")
+         li.id = category.name;
+         li.innerHTML = `<h1>${category.name}</h1><img src="images/img7.jpg" alt="" width="300" height="380">`;
+         categoryUL.appendChild(li);
+     })
+
+     categoryWrapper.innerHTML = "";
+     categoryWrapper.appendChild(categoryUL);
+    });  
+}
+
+printProducts();
+printCategories();

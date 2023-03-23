@@ -81,10 +81,11 @@ export function printLoginForm() {
            })
            .then(res => res.json())
            .then(data => {
-                if (data.email) {
-                    loggedInMsg.innerHTML = `<h3>Du är nu inloggad ${data.email}!<br>
+                if (data.name) {
+                    userMsg.innerHTML = "";
+                    loggedInMsg.innerHTML = `<h3>Du är nu inloggad ${data.name}!<br>
                     Hoppas du har en fin dag!</h3>`;
-                    localStorage.setItem("username", data.email);
+                    localStorage.setItem("username", data.name);
                     printLogoutBtn();
                 }
                 else {

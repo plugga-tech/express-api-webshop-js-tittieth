@@ -2,6 +2,7 @@ var express = require("express");
 var router = express.Router();
 const OrderModel = require("../models/order-model");
 const ProductModel = require("../models/product-model");
+const UserModel = require("../models/user-model");
 
 router.get("/all", async (req, res, next) => {
   try {
@@ -13,22 +14,36 @@ router.get("/all", async (req, res, next) => {
 });
 
 router.post("/add", async (req, res, next) => {
-  const { user, products } = req.body;
-
   try {
-    const order = await OrderModel.create(req.body);
-    console.log(order);
+    const { user, products } = req.body;
+    const findUser = await UserModel.findOne({ _id: user });
+    console.log(findUser);
 
-    for (const { productId, quantity } of products) {
-      const product = await ProductModel.findById({ _id: productId });
-      if (product) {
-        product.lager -= quantity;
-        await product.save();
+    if (findUser) {
+      const order = await OrderModel.create(req.body);
+      console.log(order);
+  
+      for (const { productId, quantity } of products) {
+        const product = await ProductModel.findOne({ _id: productId });
+        if (product) {
+          product.lager -= quantity;
+            if (product.lager <= 0) {
+              res.status(401).json("Produkten är slut i lager");
+            }else {
+              await product.save();
+            }
+        } else {
+          res.status(401).json("Produkten finns inte");
+          break;
+        }
       }
+      res.status(200).json(order);
+    } else {
+      res.status(401).json("Användaren kan inte hittas");
     }
-    res.status(200).json(order);
   } catch (error) {
-    res.status(401).json("Ditt ordervärde är högre än aktuellt lagervärde");
+    console.log(error);
+    res.status(400).json(error);
   }
 });
 

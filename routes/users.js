@@ -9,7 +9,7 @@ router.get("/", async (req, res, next) => {
     const users = await UserModel.find().select("_id name email");
     res.status(200).json(users);
   } catch (error) {
-    res.status(500).json(error);
+    res.status(400).json(error);
   }
 });
 
@@ -39,7 +39,7 @@ router.post("/add", async (req, res, next) => {
     console.log(savedUser);
     res.status(200).json(savedUser);
   } catch (error) {
-    res.status(500).json(error);
+    res.status(400).json(error);
   }
 });
 

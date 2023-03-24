@@ -1,5 +1,7 @@
 import { printLoginForm, printLogoutBtn } from "./userform.js";
 
+let cart = JSON.parse(localStorage.getItem("cart")) || [];
+
 const miniBasket = document.querySelector("#miniBasket");
 const numberOfProductsInMiniBasket = document.querySelector(
   "#numberOfProductsInMiniBasket"
@@ -31,8 +33,7 @@ function printProducts() {
   fetch("http://localhost:3000/api/products")
     .then((res) => res.json())
     .then((products) => {
-      console.table(products);
-      console.log(products.map((product) => product.name));
+     // console.log(products.map((product) => product.name));
 
       let productCards = document.createElement("ul");
       productCards.classList.add("productCards");
@@ -75,8 +76,16 @@ function addToCart(id) {
   fetch("http://localhost:3000/api/products/" + id)
   .then((res) => res.json())
   .then((product) => {
-    console.log(product)
-})
+    const itemIndex = cart.findIndex(cartProduct => cartProduct._id === product._id);
+    if (itemIndex >= 0) {
+      cart[itemIndex].quantity ++;
+    } else {
+      const updatedCart = [...cart, {...product, quantity: 1}];
+      cart = updatedCart;
+    }
+    console.log(cart);
+    localStorage.setItem("cart", JSON.stringify(cart));
+  })
 }
 
 function printCategories() {
@@ -106,8 +115,6 @@ function printCategories() {
 //   btn.addEventListener('click', remove);
 // });
 
-// const addBtn = document.getElementById('buttonAdd');
-// addBtn.addEventListener('click', addToCart(e));
 
 // function remove() {
 //   if (products[this.dataset.id].amount > 0) {

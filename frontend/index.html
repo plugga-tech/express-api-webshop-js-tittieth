@@ -48,8 +48,39 @@
     </svg>
 
     <main class="products-wrapper" id="productsWrapper">
+        <!-- Produkter renderas från JavaScripten -->
     </main>
     <section class="category-section" id="categories"></section>
+
+    <section class="basket">
+        <h2>Varukorgen</h2>
+        <hr />
+        <div id="basket-grid">
+          <!-- Produkter renderas från JavaScripten -->
+        </div>
+        <hr />
+        <div class="message">
+          <p id="discountMessage"></p>
+        </div>
+        <div class="discount-div">
+          <div class="discount-input">
+            <label class="discount">
+              Rabattkod:
+              <input type="text" id="discountCode" class="discount-code" />
+            </label>
+            <button id="checkDiscountBtn">Ok</button>
+          </div>
+          <div class="basket-bottom">
+            <div class="price-display">
+              <p>Totalt: <span id="totalPriceDisplay"></span>kr</p>
+            </div>
+          </div>
+        </div>
+        <div class="basket-btn">
+          <button id="clearBasketBtn" onclick="clearBasket()">Rensa varukorgen</button>
+          <button class="buy-btn">Beställ</button>
+        </div>
+      </section>
 
     <footer class="footer">
         <svg class="footer-wave" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320">

@@ -5,7 +5,7 @@ const CategoryModel = require("../models/category-model");
 
 router.get("/", async (req, res, next) => {
   try {
-    const products = await ProductModel.find();
+    const products = await ProductModel.find().populate('category');
     if (products.length > 0) {
       res.status(200).json(products);
     } else {
@@ -18,7 +18,7 @@ router.get("/", async (req, res, next) => {
 
 router.get("/:id", async (req, res, next) => {
   try {
-    const findProduct = await ProductModel.findById({ _id: req.params.id });
+    const findProduct = await ProductModel.findById({ _id: req.params.id }).populate('category');
     console.log(findProduct);
     if (findProduct) {
       res.status(200).json(findProduct);
@@ -32,7 +32,7 @@ router.get("/:id", async (req, res, next) => {
 
 router.get("/category/:id", async (req, res, next) => {
   try {
-    const findProduct = await ProductModel.find({ category: req.params.id });
+    const findProduct = await ProductModel.find({ category: req.params.id }).populate('category');
     console.log(findProduct);
     if (findProduct) {
       res.status(200).json(findProduct);

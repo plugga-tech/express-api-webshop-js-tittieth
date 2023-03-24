@@ -9,9 +9,10 @@ const numberOfProductsInMiniBasket = document.querySelector(
 const totalPriceInMiniBasket = document.querySelector(
   "#totalPriceInMiniBasket"
 );
-const cartGrid = document.querySelector("#cart-grid");
+const cartGrid = document.querySelector("#cartGrid");
 const totalPriceDisplay = document.querySelector("#price-display");
 const buyBtn = document.querySelector("#buy-button");
+const clearOrderBtn = document.querySelector('#clearBasketBtn')
 
 const productWrapper = document.getElementById("productsWrapper");
 const categoryWrapper = document.getElementById("categories");
@@ -19,7 +20,7 @@ const categoryWrapper = document.getElementById("categories");
 let productAmount;
 let shippingPrice;
 let totalPricePerProduct;
-let totalPrice;
+
 
 if (localStorage.getItem("username")) {
   console.log("ÄR INLOGGAD");
@@ -66,7 +67,11 @@ function printProducts() {
       const addBtn = document.querySelectorAll(".button-add");
       addBtn.forEach((btn) => {
         btn.addEventListener("click", (e) => {
-          addToCart(e.target.id);
+          if (localStorage.getItem("username")) {
+            addToCart(e.target.id);
+          } else {
+            console.log("Du måste vara inloggad för att beställa");
+          }
         });
       });
     });
@@ -87,6 +92,9 @@ function addToCart(id) {
       }
       console.log(cart);
       localStorage.setItem("cart", JSON.stringify(cart));
+      calculateTotalPriceAndTotalItems();
+      updateTotalPriceAndTotalItems();
+      printCartItems();
     });
 }
 
@@ -119,10 +127,10 @@ function printCartItems() {
   cart.map((product) => {
     let li = document.createElement("li");
     li.id = product._id;
-    li.innerHTML = `<div class="item">
-    <img src="images/img1.jpg" alt="" width="200" height="240">
-    <div class="item-content">
-      <div class="item-info">
+    li.innerHTML = `<div class="cart">
+    <img src="images/img1.jpg" alt="" width="100" height="140">
+    <div class="cart-content">
+      <div class="cart-info">
         <h3>${product.name}</h3>
         <p>${product.price}</p>
         <p>Antal: ${product.quantity}</p>
@@ -133,23 +141,52 @@ function printCartItems() {
   });
   cartGrid.innerHTML = "";
   cartGrid.appendChild(cartItems);
-
-  calculateSumAndOrderItems();
 }
 
-function calculateSumAndOrderItems () {
-  let totalPrice = 0;
-  let totalItems = 0;
+let totalPrice = 0;
+let totalItems = 0;
 
+function calculateTotalPriceAndTotalItems () {
+  totalPrice = 0;
+  totalItems = 0;
   cart.forEach((item) => {
     totalPrice += item.price * item.quantity;
     totalItems += item.quantity;
+    console.log(totalPrice)
   });
-
-  totalPriceDisplay.innerHTML = `Antal ${totalItems} Summa ${totalPrice}`;
 }
 
+function updateTotalPriceAndTotalItems() {
+  const itemsInCart = document.createElement("h4");
+  itemsInCart.innerText = "Antal: " + totalItems;
+  const totalSum = document.createElement("h4");
+  totalSum.innerText = "Totalsumma: " + totalPrice;
+
+  const orderBtn = document.createElement("button")
+  orderBtn.innerText = "Beställ"
+  orderBtn.addEventListener("click", placeOrder);
+
+  const eraseBtn = document.createElement("button")
+  eraseBtn.innerText = "Rensa order"
+  eraseBtn.addEventListener("click", clearBasket);
+
+  totalPriceDisplay.innerHTML = "";
+  totalPriceDisplay.append(itemsInCart, totalSum, orderBtn, eraseBtn)
+}
+
+
+
+
+// totalPriceDisplay.innerHTML = `Antal ${totalItems} <br> Summa ${totalPrice} <br><button id="orderBtn">Beställ</button>`;
+
+
 printCartItems();
+
+calculateTotalPriceAndTotalItems();
+
+function placeOrder () {
+  console.log("click")
+}
 
 // const removeBtn = document.querySelectorAll('.button-remove');
 // removeBtn.forEach(btn => {
@@ -165,5 +202,13 @@ printCartItems();
 
 console.log(cart);
 
+function clearBasket() {
+  console.log("erase")
+  cartGrid.innerHTML = '';
+  localStorage.removeItem("cart");
+}
+
+
 printProducts();
 printCategories();
+updateTotalPriceAndTotalItems();

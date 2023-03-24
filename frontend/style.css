@@ -188,3 +188,13 @@ header {
     display: flex;
     justify-content: center;
 }
+
+.cart-items{
+    text-align: center;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(2, 1fr);
+    grid-column-gap: 10px;
+    grid-row-gap: 10px;
+    font-size: 1rem;
+}

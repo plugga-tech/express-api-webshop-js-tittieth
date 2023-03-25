@@ -2,23 +2,12 @@ import { printLoginForm, printLogoutBtn } from "./userform.js";
 
 let cart = JSON.parse(localStorage.getItem("cart")) || [];
 
-const miniBasket = document.querySelector("#miniBasket");
-const numberOfProductsInMiniBasket = document.querySelector(
-  "#numberOfProductsInMiniBasket"
-);
-const totalPriceInMiniBasket = document.querySelector(
-  "#totalPriceInMiniBasket"
-);
+const numberOfProductsInMiniBasket = document.querySelector("#numberOfProductsInMiniBasket");
+const totalPriceInMiniBasket = document.querySelector("#totalPriceInMiniBasket");
 const cartGrid = document.querySelector("#cartGrid");
 const totalPriceDisplay = document.querySelector("#price-display");
-
 const productWrapper = document.getElementById("productsWrapper");
 const categoryWrapper = document.getElementById("categories");
-
-let productAmount;
-let shippingPrice;
-let totalPricePerProduct;
-
 
 if (localStorage.getItem("user")) {
   console.log("ÄR INLOGGAD");
@@ -30,8 +19,8 @@ if (localStorage.getItem("user")) {
   printLoginForm();
 }
 
-function printProducts() {
-  fetch("http://localhost:3000/api/products")
+function printProducts(categoryId) {
+  fetch("http://localhost:3000/api/products/category/" + categoryId)
     .then((res) => res.json())
     .then((products) => {
       // console.log(products.map((product) => product.name));
@@ -79,6 +68,7 @@ function printProducts() {
     });
 }
 
+
 function addToCart(id) {
   fetch("http://localhost:3000/api/products/" + id)
     .then((res) => res.json())
@@ -104,7 +94,7 @@ function printCategories() {
   fetch("http://localhost:3000/api/categories")
     .then((res) => res.json())
     .then((categories) => {
-      // console.table(categories);
+      console.table(categories);
 
       const categoryUL = document.createElement("ul");
       categoryUL.classList.add("categoryUL");
@@ -112,8 +102,19 @@ function printCategories() {
 
       categories.map((category) => {
         let li = document.createElement("li");
-        li.id = category.name;
+        li.id = category._id;
+        console.log(category._id)
         li.innerHTML = `<h1>${category.name}</h1><img src="images/img7.jpg" alt="" width="300" height="380">`;
+        li.addEventListener("click", () => {
+          fetch(`http://localhost:3000/api/products/category/${category._id}`)
+            .then((res) => res.json())
+            .then((products) => {
+              console.log(products)
+              printProducts(category._id);
+              
+            })
+            .catch((err) => console.log(err));
+        });
         categoryUL.appendChild(li);
       });
 
@@ -178,15 +179,6 @@ function updateTotalPriceAndTotalItems() {
   totalPriceDisplay.innerHTML = "";
   totalPriceDisplay.append(itemsInCart, totalSum, orderBtn, eraseBtn)
 }
-
-
-
-// totalPriceDisplay.innerHTML = `Antal ${totalItems} <br> Summa ${totalPrice} <br><button id="orderBtn">Beställ</button>`;
-
-
-printCartItems();
-
-calculateTotalPriceAndTotalItems();
 
 function placeOrder () {
   if (cart.length > 0) {
@@ -266,7 +258,12 @@ function printViewOrdersBtn() {
   loginApp.appendChild(ordersBtn);
 }
 
+function printUsersOrders() {
 
-printProducts();
+}
+
+printCartItems();
+calculateTotalPriceAndTotalItems();
+//printProducts();
 printCategories();
 updateTotalPriceAndTotalItems();

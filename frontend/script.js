@@ -29,6 +29,15 @@ function printProducts(categoryId) {
       productCards.classList.add("productCards");
       productCards.innerHTML = "";
 
+      let goBackBtn = document.createElement("button");
+      goBackBtn.classList.add("go-back-btn");
+      goBackBtn.innerText = "Tillbaka";
+
+      goBackBtn.addEventListener("click", () => {
+        printCategories();
+    })
+    
+
       products.map((product) => {
         let li = document.createElement("li");
         li.id = product._id;
@@ -52,7 +61,7 @@ function printProducts(categoryId) {
         productCards.appendChild(li);
       });
       productWrapper.innerHTML = "";
-      productWrapper.appendChild(productCards);
+      productWrapper.append(productCards, goBackBtn);
       const addBtn = document.querySelectorAll(".button-add");
 
       addBtn.forEach((btn) => {
@@ -118,8 +127,8 @@ function printCategories() {
         categoryUL.appendChild(li);
       });
 
-      categoryWrapper.innerHTML = "";
-      categoryWrapper.appendChild(categoryUL);
+      productWrapper.innerHTML = "";
+      productWrapper.appendChild(categoryUL);
     });
 }
 

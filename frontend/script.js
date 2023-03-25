@@ -11,8 +11,6 @@ const totalPriceInMiniBasket = document.querySelector(
 );
 const cartGrid = document.querySelector("#cartGrid");
 const totalPriceDisplay = document.querySelector("#price-display");
-const buyBtn = document.querySelector("#buy-button");
-const clearOrderBtn = document.querySelector('#clearBasketBtn')
 
 const productWrapper = document.getElementById("productsWrapper");
 const categoryWrapper = document.getElementById("categories");
@@ -25,6 +23,8 @@ let totalPricePerProduct;
 if (localStorage.getItem("user")) {
   console.log("ÄR INLOGGAD");
   printLogoutBtn();
+  printViewOrdersBtn();
+  placeOrder();
 } else {
   console.log("ÄR EJ INLOGGAD");
   printLoginForm();
@@ -158,9 +158,9 @@ function calculateTotalPriceAndTotalItems () {
 
 function updateTotalPriceAndTotalItems() {
   const itemsInCart = document.createElement("h4");
-  itemsInCart.innerText = "Antal: " + totalItems;
+  itemsInCart.innerText = "Antal: " + Math.round(totalItems);
   const totalSum = document.createElement("h4");
-  totalSum.innerText = "Totalsumma: " + totalPrice;
+  totalSum.innerText = "Totalsumma: " + Math.round(totalPrice);
 
   const orderBtn = document.createElement("button")
   orderBtn.innerText = "Beställ"
@@ -170,10 +170,12 @@ function updateTotalPriceAndTotalItems() {
   eraseBtn.innerText = "Rensa order"
   eraseBtn.addEventListener("click", clearBasket);
 
+  numberOfProductsInMiniBasket.innerHTML = `${totalItems}st`;
+  totalPriceInMiniBasket.innerHTML = `${Math.round(totalPrice)}kr`;
+
   totalPriceDisplay.innerHTML = "";
   totalPriceDisplay.append(itemsInCart, totalSum, orderBtn, eraseBtn)
 }
-
 
 
 
@@ -185,12 +187,45 @@ printCartItems();
 calculateTotalPriceAndTotalItems();
 
 function placeOrder () {
-  console.log("click")
-  let user = localStorage.getItem("user");
+  if (cart.length > 0) {
+    console.log("click")
+  let user = JSON.parse(localStorage.getItem("user"));
   console.log(JSON.stringify(user));
+
+  let productsInCart = JSON.parse(localStorage.getItem("cart"))
+
+  let productArray = [];
+
+  productsInCart.forEach((product) => {
+    const newProduct = {productId: product._id, quantity: product.quantity};
+    productArray.push(newProduct);
+  });
+
+  let order = {
+    user: user._id,
+    products: productArray
+  };
+
+  fetch("http://localhost:3000/api/orders/add", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            }, 
+            body: JSON.stringify(order)
+           })
+           .then(res => res.json())
+           .then(data => {
+            console.log(data)
+            console.log("Tack för din beställning");
+            localStorage.removeItem("cart");
+            calculateTotalPriceAndTotalItems();
+           })
+  } else {
+    console.log("inga varor i varukorgen")
+  }
+
 }
 
-placeOrder();
 
 // const removeBtn = document.querySelectorAll('.button-remove');
 // removeBtn.forEach(btn => {
@@ -210,6 +245,19 @@ function clearBasket() {
   console.log("erase")
   cartGrid.innerHTML = '';
   localStorage.removeItem("cart");
+}
+
+function printViewOrdersBtn() {
+  // SKAPA LOGGA UT KNAPP    
+  let ordersBtn = document.createElement("button");
+  ordersBtn.classList.add("orders-btn");
+  ordersBtn.innerText = "Visa mina ordrar";
+
+
+  ordersBtn.addEventListener("click", () => {
+      console.log("clicked order btn")
+  })
+  loginApp.appendChild(ordersBtn);
 }
 
 

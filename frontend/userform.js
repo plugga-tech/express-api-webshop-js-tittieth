@@ -106,7 +106,7 @@ export function printLogoutBtn() {
 
 
     logoutBtn.addEventListener("click", () => {
-        localStorage.removeItem("username");
+        localStorage.removeItem("user");
         userMsg.innerText = "";
         loggedInMsg.innerHTML = "";
         printLoginForm();

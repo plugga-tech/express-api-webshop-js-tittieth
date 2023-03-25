@@ -22,7 +22,7 @@ let shippingPrice;
 let totalPricePerProduct;
 
 
-if (localStorage.getItem("username")) {
+if (localStorage.getItem("user")) {
   console.log("ÄR INLOGGAD");
   printLogoutBtn();
 } else {
@@ -67,7 +67,7 @@ function printProducts() {
       const addBtn = document.querySelectorAll(".button-add");
       addBtn.forEach((btn) => {
         btn.addEventListener("click", (e) => {
-          if (localStorage.getItem("username")) {
+          if (localStorage.getItem("user")) {
             addToCart(e.target.id);
           } else {
             console.log("Du måste vara inloggad för att beställa");
@@ -186,7 +186,11 @@ calculateTotalPriceAndTotalItems();
 
 function placeOrder () {
   console.log("click")
+  let user = localStorage.getItem("user");
+  console.log(JSON.stringify(user));
 }
+
+placeOrder();
 
 // const removeBtn = document.querySelectorAll('.button-remove');
 // removeBtn.forEach(btn => {
@@ -200,7 +204,7 @@ function placeOrder () {
 //   }
 // }
 
-console.log(cart);
+//console.log(cart);
 
 function clearBasket() {
   console.log("erase")

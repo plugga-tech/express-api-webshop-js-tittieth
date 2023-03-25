@@ -67,7 +67,7 @@ router.post("/login", async (req, res, next) => {
     }
 
     const { password, ...loggedin } = user._doc;
-
+    console.log(loggedin)
     return res.status(200).json(loggedin);
   } catch (error) {
     console.log(error);

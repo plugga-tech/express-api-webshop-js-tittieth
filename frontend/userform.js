@@ -70,7 +70,6 @@ export function printLoginForm() {
             email: emailInput.value,
             password: passwordInput.value
         }
-        console.log(loginUser);
         
         fetch("http://localhost:3000/api/users/login", {
             method: "POST",
@@ -81,11 +80,11 @@ export function printLoginForm() {
            })
            .then(res => res.json())
            .then(data => {
-                if (data.name) {
+                if (data) {
                     userMsg.innerHTML = "";
                     loggedInMsg.innerHTML = `<h3>Du är nu inloggad ${data.name}!<br>
                     Hoppas du har en fin dag!</h3>`;
-                    localStorage.setItem("username", data.name);
+                    localStorage.setItem("user", JSON.stringify(data));
                     printLogoutBtn();
                 }
                 else {

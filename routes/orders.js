@@ -48,7 +48,7 @@ router.post("/add", async (req, res, next) => {
         const product = await ProductModel.findOne({ _id: productId });
         if (product) {
           product.lager -= quantity;
-          if (product.lager <= 0) {
+          if (product.lager < 0) {
             validateOrder = false;
             break;
           } else {

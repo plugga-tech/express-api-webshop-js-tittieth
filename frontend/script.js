@@ -65,12 +65,14 @@ function printProducts() {
       productWrapper.innerHTML = "";
       productWrapper.appendChild(productCards);
       const addBtn = document.querySelectorAll(".button-add");
+
       addBtn.forEach((btn) => {
         btn.addEventListener("click", (e) => {
-          if (localStorage.getItem("user")) {
+          const product = products.find((p) => p._id === e.target.id);
+          if (localStorage.getItem("user") && product.lager > 0) {
             addToCart(e.target.id);
           } else {
-            console.log("Du måste vara inloggad för att beställa");
+            console.log("Antingen är du inte inloggad eller så är produkten tyvärr slutsåld");
           }
         });
       });
@@ -188,25 +190,29 @@ calculateTotalPriceAndTotalItems();
 
 function placeOrder () {
   if (cart.length > 0) {
+    console.log(cart)
     console.log("click")
-  let user = JSON.parse(localStorage.getItem("user"));
-  console.log(JSON.stringify(user));
+    let user = JSON.parse(localStorage.getItem("user"));
+    console.log(JSON.stringify(user));
 
-  let productsInCart = JSON.parse(localStorage.getItem("cart"))
+    let productsInCart = JSON.parse(localStorage.getItem("cart"))
+    console.log(JSON.stringify(cart))
 
-  let productArray = [];
+    let productArray = [];
 
-  productsInCart.forEach((product) => {
+    productsInCart.forEach((product) => {
     const newProduct = {productId: product._id, quantity: product.quantity};
     productArray.push(newProduct);
-  });
+   });
 
-  let order = {
-    user: user._id,
-    products: productArray
-  };
+   let order = {
+      user: user._id,
+      products: productArray
+   };
 
-  fetch("http://localhost:3000/api/orders/add", {
+   console.log(order);
+
+    fetch("http://localhost:3000/api/orders/add", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -215,11 +221,11 @@ function placeOrder () {
            })
            .then(res => res.json())
            .then(data => {
-            console.log(data)
-            console.log("Tack för din beställning");
-            localStorage.removeItem("cart");
-            calculateTotalPriceAndTotalItems();
-           })
+              console.log(data)
+              console.log("Tack för din beställning");
+              localStorage.removeItem("cart");
+              calculateTotalPriceAndTotalItems();
+            })
   } else {
     console.log("inga varor i varukorgen")
   }

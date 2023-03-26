@@ -173,9 +173,9 @@ function calculateTotalPriceAndTotalItems() {
 
 function updateTotalPriceAndTotalItems() {
   const itemsInCart = document.createElement("h4");
-  itemsInCart.innerText = "Antal: " + Math.round(totalItems);
+  itemsInCart.innerText = "Antal: " + totalItems;
   const totalSum = document.createElement("h4");
-  totalSum.innerText = "Totalsumma: " + Math.round(totalPrice);
+  totalSum.innerText = "Totalsumma: " + (Math.round(totalPrice));
 
   const orderBtn = document.createElement("button");
   orderBtn.classList.add("order-btn");
@@ -188,7 +188,7 @@ function updateTotalPriceAndTotalItems() {
   eraseBtn.addEventListener("click", clearCart);
 
   numberOfProductsInMiniBasket.innerHTML = `${totalItems}st`;
-  totalPriceInMiniBasket.innerHTML = `${Math.round(totalPrice)}kr`;
+  totalPriceInMiniBasket.innerHTML = `${(Math.round(totalPrice))}kr`;
 
   totalPriceDisplay.innerHTML = "";
   totalPriceDisplay.append(itemsInCart, totalSum, orderBtn, eraseBtn);

@@ -22,7 +22,7 @@ router.get("/all/:token", async (req, res, next) => {
     const orders = await OrderModel.find();
     const token = (req.params.token);
     console.log(token);
-    if ((token === "1234key1234")) {
+    if ((token === process.env.API_KEY)) {
       res.status(200).json(orders);
     } else {
       res.status(401).json("not authorized to do that")
@@ -76,9 +76,9 @@ router.post("/add", async (req, res, next) => {
 
 router.post("/user", async (req, res, next) => {
   try {
-    const findOrders = await OrderModel.find({ user: req.body.user });
+    const findOrders = await OrderModel.find({ user: req.body.user }).populate({path: 'products.productId', model: 'product'}).populate('user');
     const token = (req.body.token);
-    if (token === "1234key1234") {
+    if (token === process.env.API_KEY) {
       res.send(findOrders);
     } else {
       res.status(401).json("not authorized to do that")

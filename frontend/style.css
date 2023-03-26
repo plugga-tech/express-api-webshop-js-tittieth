@@ -26,7 +26,7 @@ header {
     align-items: center;
 }
 
-.van {
+.van-img {
     /* display: inline;
     position: relative; */
     left: 780px;
@@ -45,6 +45,7 @@ header {
     height: 900px;
     position: relative;
     display: inline;
+    z-index: -20;
 }
 
 #email,
@@ -167,7 +168,6 @@ header {
 
 .productCards {
     text-align: center;
-    margin-bottom: 450px;
 }
 
 .productCards li {
@@ -183,13 +183,15 @@ header {
 
 .button-add, .button-remove {
     padding: 0 20px;
-    margin: 15px;
+    margin: 65px 15px 15px;
     font-size: 2.4rem;
 }
 
 .products-wrapper {
+    margin-top: -200px;
     display: flex;
     justify-content: center;
+    z-index: 9;
 }
 
 .cart-items{
@@ -200,4 +202,39 @@ header {
     grid-column-gap: 10px;
     grid-row-gap: 10px;
     font-size: 1rem;
+}
+
+.item-info h3 {
+    font-size: 3rem;
+    margin-bottom: 20px;
+}
+
+.item-info p:first-of-type {
+    margin-bottom: 20px;
+}
+
+.item-selection p {
+    font-size: 1.7rem;
+}
+
+.go-back-btn {
+    width: 65px;
+    height: 45px;
+    z-index: 10;
+}
+
+.basket {
+    padding: 200px;
+    margin-top: -150px;
+    margin-bottom: -600px;
+    z-index: 100;
+}
+
+.basket h2 {
+    text-align: center;
+    font-size: 3rem;
+}
+
+footer {
+    z-index: -9;
 }

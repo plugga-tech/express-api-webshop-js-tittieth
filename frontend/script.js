@@ -1,19 +1,21 @@
-import { printLoginForm, printLogoutBtn } from "./userform.js";
+import { printLoginForm } from "./userform.js";
 
 let cart = JSON.parse(localStorage.getItem("cart")) || [];
 
-const numberOfProductsInMiniBasket = document.querySelector("#numberOfProductsInMiniBasket");
-const totalPriceInMiniBasket = document.querySelector("#totalPriceInMiniBasket");
+const numberOfProductsInMiniBasket = document.querySelector(
+  "#numberOfProductsInMiniBasket"
+);
+const totalPriceInMiniBasket = document.querySelector(
+  "#totalPriceInMiniBasket"
+);
 const cartGrid = document.querySelector("#cartGrid");
-const totalPriceDisplay = document.querySelector("#price-display");
+const totalPriceDisplay = document.querySelector("#priceDisplay");
 const productWrapper = document.getElementById("productsWrapper");
-const categoryWrapper = document.getElementById("categories");
+const ordersDiv = document.getElementById("orders-div");
 
 if (localStorage.getItem("user")) {
   console.log("ÄR INLOGGAD");
   printLogoutBtn();
-  printViewOrdersBtn();
-  placeOrder();
 } else {
   console.log("ÄR EJ INLOGGAD");
   printLoginForm();
@@ -25,6 +27,8 @@ function printProducts(categoryId) {
     .then((products) => {
       // console.log(products.map((product) => product.name));
 
+      let productDiv = document.createElement("div");
+
       let productCards = document.createElement("ul");
       productCards.classList.add("productCards");
       productCards.innerHTML = "";
@@ -34,9 +38,9 @@ function printProducts(categoryId) {
       goBackBtn.innerText = "Tillbaka";
 
       goBackBtn.addEventListener("click", () => {
+        console.log("click");
         printCategories();
-    })
-    
+      });
 
       products.map((product) => {
         let li = document.createElement("li");
@@ -46,7 +50,6 @@ function printProducts(categoryId) {
         <div class="item-content">
           <div class="item-info">
             <h3>${product.name}</h3>
-            <p>${product.category.name}</p>
             <p>${product.description}</p>
             <p>Antal i lager: ${product.lager}</p>
 
@@ -59,9 +62,10 @@ function printProducts(categoryId) {
           </div>
         </div>`;
         productCards.appendChild(li);
+        productDiv.appendChild(productCards);
       });
       productWrapper.innerHTML = "";
-      productWrapper.append(productCards, goBackBtn);
+      productWrapper.append(productDiv, goBackBtn);
       const addBtn = document.querySelectorAll(".button-add");
 
       addBtn.forEach((btn) => {
@@ -70,13 +74,14 @@ function printProducts(categoryId) {
           if (localStorage.getItem("user") && product.lager > 0) {
             addToCart(e.target.id);
           } else {
-            console.log("Antingen är du inte inloggad eller så är produkten tyvärr slutsåld");
+            console.log(
+              "Antingen är du inte inloggad eller så är produkten tyvärr slutsåld"
+            );
           }
         });
       });
     });
 }
-
 
 function addToCart(id) {
   fetch("http://localhost:3000/api/products/" + id)
@@ -103,8 +108,6 @@ function printCategories() {
   fetch("http://localhost:3000/api/categories")
     .then((res) => res.json())
     .then((categories) => {
-      console.table(categories);
-
       const categoryUL = document.createElement("ul");
       categoryUL.classList.add("categoryUL");
       categoryUL.innerHTML = "";
@@ -112,15 +115,13 @@ function printCategories() {
       categories.map((category) => {
         let li = document.createElement("li");
         li.id = category._id;
-        console.log(category._id)
-        li.innerHTML = `<h1>${category.name}</h1><img src="images/img7.jpg" alt="" width="300" height="380">`;
+        li.innerHTML = `<h1>${category.name}</h1><img src="images/img4.jpg" alt="" width="300" height="420">`;
         li.addEventListener("click", () => {
           fetch(`http://localhost:3000/api/products/category/${category._id}`)
             .then((res) => res.json())
             .then((products) => {
-              console.log(products)
+              console.log(products);
               printProducts(category._id);
-              
             })
             .catch((err) => console.log(err));
         });
@@ -130,6 +131,7 @@ function printCategories() {
       productWrapper.innerHTML = "";
       productWrapper.appendChild(categoryUL);
     });
+  updateTotalPriceAndTotalItems();
 }
 
 function printCartItems() {
@@ -153,18 +155,19 @@ function printCartItems() {
   });
   cartGrid.innerHTML = "";
   cartGrid.appendChild(cartItems);
+  updateTotalPriceAndTotalItems();
 }
 
 let totalPrice = 0;
 let totalItems = 0;
 
-function calculateTotalPriceAndTotalItems () {
+function calculateTotalPriceAndTotalItems() {
   totalPrice = 0;
   totalItems = 0;
   cart.forEach((item) => {
     totalPrice += item.price * item.quantity;
     totalItems += item.quantity;
-    console.log(totalPrice)
+    console.log(totalPrice);
   });
 }
 
@@ -174,105 +177,152 @@ function updateTotalPriceAndTotalItems() {
   const totalSum = document.createElement("h4");
   totalSum.innerText = "Totalsumma: " + Math.round(totalPrice);
 
-  const orderBtn = document.createElement("button")
-  orderBtn.innerText = "Beställ"
+  const orderBtn = document.createElement("button");
+  orderBtn.classList.add("order-btn");
+  orderBtn.innerText = "Beställ";
   orderBtn.addEventListener("click", placeOrder);
 
-  const eraseBtn = document.createElement("button")
-  eraseBtn.innerText = "Rensa order"
-  eraseBtn.addEventListener("click", clearBasket);
+  const eraseBtn = document.createElement("button");
+  eraseBtn.classList.add("erase-btn");
+  eraseBtn.innerText = "Rensa order";
+  eraseBtn.addEventListener("click", clearCart);
 
   numberOfProductsInMiniBasket.innerHTML = `${totalItems}st`;
   totalPriceInMiniBasket.innerHTML = `${Math.round(totalPrice)}kr`;
 
   totalPriceDisplay.innerHTML = "";
-  totalPriceDisplay.append(itemsInCart, totalSum, orderBtn, eraseBtn)
+  totalPriceDisplay.append(itemsInCart, totalSum, orderBtn, eraseBtn);
 }
 
-function placeOrder () {
+function placeOrder() {
   if (cart.length > 0) {
-    console.log(cart)
-    console.log("click")
+    console.log(cart);
+    console.log("click");
     let user = JSON.parse(localStorage.getItem("user"));
     console.log(JSON.stringify(user));
 
-    let productsInCart = JSON.parse(localStorage.getItem("cart"))
-    console.log(JSON.stringify(cart))
+    let productsInCart = JSON.parse(localStorage.getItem("cart"));
+    console.log(JSON.stringify(cart));
 
     let productArray = [];
 
     productsInCart.forEach((product) => {
-    const newProduct = {productId: product._id, quantity: product.quantity};
-    productArray.push(newProduct);
-   });
+      const newProduct = { productId: product._id, quantity: product.quantity };
+      productArray.push(newProduct);
+    });
 
-   let order = {
+    let order = {
       user: user._id,
-      products: productArray
-   };
+      products: productArray,
+    };
 
-   console.log(order);
+    console.log(order);
 
     fetch("http://localhost:3000/api/orders/add", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            }, 
-            body: JSON.stringify(order)
-           })
-           .then(res => res.json())
-           .then(data => {
-              console.log(data)
-              console.log("Tack för din beställning");
-              localStorage.removeItem("cart");
-              calculateTotalPriceAndTotalItems();
-            })
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(order),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data);
+        console.log("Tack för din beställning");
+        localStorage.removeItem("cart");
+        calculateTotalPriceAndTotalItems();
+      });
   } else {
-    console.log("inga varor i varukorgen")
+    console.log("inga varor i varukorgen");
   }
-
 }
-
 
 // const removeBtn = document.querySelectorAll('.button-remove');
 // removeBtn.forEach(btn => {
 //   btn.addEventListener('click', remove);
 // });
 
-// function remove() {
-//   if (products[this.dataset.id].amount > 0) {
-//     products[this.dataset.id].amount -= 1;
-//     renderProducts();
+// function removeFromCart() {
 //   }
 // }
 
-//console.log(cart);
-
-function clearBasket() {
-  console.log("erase")
-  cartGrid.innerHTML = '';
+function clearCart() {
+  console.log("erase");
+  cartGrid.innerHTML = "";
   localStorage.removeItem("cart");
 }
 
-function printViewOrdersBtn() {
-  // SKAPA LOGGA UT KNAPP    
+function printUsersOrders() {
+  let user = JSON.parse(localStorage.getItem("user"));
+
+  let orderObject = {
+    user: user._id,
+    token: "1234key1234",
+  };
+
+  console.log(orderObject);
+
+  fetch("http://localhost:3000/api/orders/user", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(orderObject),
+  })
+    .then((res) => res.json())
+    .then((data) => {
+      if (data.length > 0) {
+        console.log(data);
+        let ordersHtml = "";
+        data.forEach((order) => {
+          let productsHtml = "";
+          order.products.forEach((product) => {
+            productsHtml += `<li>${product.productId.name} - Antal: ${product.quantity}</li>`;
+          });
+          ordersHtml += `
+          <div>
+            <h3>Order ID: ${order._id}</h3>
+            <ul>${productsHtml}</ul>
+          </div>
+        `;
+        });
+        ordersDiv.innerHTML = ordersHtml;
+      } else {
+        console.log("Du har inga ordrar");
+      }
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+}
+
+function printLogoutBtn() {
+  // SKAPA LOGGA UT KNAPP
+  let logoutBtn = document.createElement("button");
+  logoutBtn.classList.add("log-out-btn");
+  logoutBtn.innerText = "Logga ut";
+
   let ordersBtn = document.createElement("button");
   ordersBtn.classList.add("orders-btn");
   ordersBtn.innerText = "Visa mina ordrar";
 
-
   ordersBtn.addEventListener("click", () => {
-      console.log("clicked order btn")
-  })
-  loginApp.appendChild(ordersBtn);
-}
+    printUsersOrders();
+  });
 
-function printUsersOrders() {
-
+  logoutBtn.addEventListener("click", () => {
+    localStorage.removeItem("user");
+    userMsg.innerText = "";
+    loggedInMsg.innerHTML = "";
+    ordersDiv.innerHTML = "";
+    printLoginForm();
+    printCategories();
+  });
+  loginApp.innerHTML = "";
+  loginApp.append(logoutBtn, ordersBtn);
 }
 
 printCartItems();
 calculateTotalPriceAndTotalItems();
-//printProducts();
 printCategories();
 updateTotalPriceAndTotalItems();

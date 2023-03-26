@@ -13,7 +13,7 @@ POST http://localhost:3000/api/users/
 Content-Type: application/json
 
 {
-  "id": "641c3654ca34ef752ed6e1e5"
+  "id": "641c3c86df347631c876cb57"
 }
 
 ###
@@ -35,8 +35,8 @@ POST http://localhost:3000/api/users/login
 Content-Type: application/json
 
 {
-  "email": "Dante@mail.com",
-  "password": "dante"
+  "email": "tittie@mail.com",
+  "password": "tittie"
 }
 
 ###
@@ -60,9 +60,9 @@ POST http://localhost:3000/api/products/add
 Content-Type: application/json
 
 {
-  "name": "keps",
-  "description": "vintage",
-  "price": 200,
+  "name": "surfläger 2",
+  "description": "massa surf och sol",
+  "price": 2000,
   "lager": 10,
   "category": "641c50a0013a9f12c1457db7",
   "token": "1234key1234"
@@ -143,7 +143,7 @@ POST http://localhost:3000/api/orders/user
 Content-Type: application/json
 
 {
-    "user": "641c3654ca34ef752ed6e1e5",
+    "user": "641c3c86df347631c876cb57",
     "token": "1234key1234"
 }
 ###

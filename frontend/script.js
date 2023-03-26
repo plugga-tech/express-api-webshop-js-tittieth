@@ -260,8 +260,6 @@ function printUsersOrders() {
     token: "1234key1234",
   };
 
-  console.log(orderObject);
-
   fetch("http://localhost:3000/api/orders/user", {
     method: "POST",
     headers: {
